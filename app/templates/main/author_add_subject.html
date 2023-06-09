@@ -1,0 +1,59 @@
+{% extends "base.html"%}
+{% block title %}إضافة موضوع جديد{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+            <form action="{{url_for("author_add_subject")}}" class="login-form" method="post" enctype="multipart/form-data">
+                <div class="mb-3 mt-3">
+                  <label for="title" class="form-label">عنوان الموضوع</label>
+                  <input type="text" class="form-control" value="" placeholder="ادخل عنوان الموضوع" name="title">
+                </div>
+                <div class="form-group">
+                    <div class="mt-3 mb-3 col-5">
+                        <label for="user_role" class="form-label"> اختار الفئة</label>
+                        <select class="form-select" name="category_id">
+                          {% if categories %}
+                          {% for category in categories %}              
+                            <option value="{{category.id}}"  >{{category.title}}</option>                      
+                          {% endfor %}
+                          {% endif %}
+                          </select>
+                     
+                    </div>
+                </div>
+                <div class="form-group mb-3 mt-3">
+                    <label for="image" class="form-label">ارفق صورة</label>
+                    <input name="image" class="form-control" type="file">
+                </div>
+
+                <div class="form-group">
+                    <label for="audio" class="form-label">ارفق ملف صوتي</label>
+                    <input name="audio" class="form-control" type="file">
+                </div>
+
+                <div class="mb-3 mt-3 form-group">
+                  <label for="title" class="form-label">محتوى الموضوع</label><br>
+                  <small style="color:red;">     &lt;p class= 'fs-5 mb-4' &gt; your text here... &lt;/p&gt; </small>
+                  <textarea class="form-control" name="content" id="" cols="30" rows="10"></textarea>
+                </div>
+
+                             
+                <button type="submit" class="btn btn-primary primary mt-3">اضافة موضوع جديد</button>
+              </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

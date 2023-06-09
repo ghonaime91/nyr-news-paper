@@ -1,0 +1,82 @@
+<nav class=" navbar navbar-expand-lg navbar-dark bg-dark sticky-top container" >
+  
+    <div class="container-fluid ms-5">
+      <a class="navbar-brand" href="{{url_for("index")}}"><img src="{{ url_for('static', filename='img/brand-logo.png')}}" width="50" alt=""> </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{url_for("index")}}">الرئيسية</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              الأقسام
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+              {% set categories = get_categories() %}
+              {% for category in categories %}
+              <li><a class="dropdown-item" href="{{url_for('subjects_by_categories',cat_id=category.id)}}">{{category.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for("chatbot")}}"> اسـأل نيـّـر</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('about') }}"> من نحـن </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">اتصل بنا </a>
+          </li> -->
+        {% if not 'user' in session %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for("login") }}">تسجيل الدخول </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for("signup") }}">تسجيل حساب جديد</a>
+          </li>
+        {% else %}
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            لوحة التحكم
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% if session['user']['role'] == 'admin' %}
+            <li><a class="dropdown-item text-center" href="{{url_for("show_users")}}">المستخدمين</a></li>
+            <li><a class="dropdown-item text-center" href="{{url_for("show_categories")}}">الفئات</a></li>
+            <li><a class="dropdown-item text-center" href="{{url_for("show_subjects")}}">المواضيع</a></li>
+            <li><a class="dropdown-item text-center" href="{{url_for("show_comments")}}">التعليقات</a></li>
+            {% elif session['user']['role'] == 'author' %}
+            <li><a class="dropdown-item text-center" href="{{url_for('show_my_subjects')}}">مواضيعي</a></li>
+            <li><a class="dropdown-item text-center" href="{{url_for('show_my_comments')}}">تعليقاتي</a></li>
+            {% else %}
+            <li><a class="dropdown-item text-center" href="{{url_for('show_my_comments')}}">تعليقاتي</a></li>
+            {% endif %}
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center" href="">{{ session['user']['first_name'] }}</a></li>
+
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for("signout") }}">تسجيل الخروج </a>
+        </li>
+        {% endif %}
+
+
+        </ul>
+
+      </div>
+    </div>
+
+  </nav>

@@ -1,0 +1,35 @@
+{% extends "base.html"%}
+{% block title %} المواضيع حسب الفئات {% endblock %}
+{% block content %}
+<div class="container mt-5">
+    
+        {% for artic in subjects %}
+        <div class="row mt-2">
+                    <div class="card col-12  col-sm-12 col-md-12 col-xl-12 col-xxl-12">
+                        <div class="row no-gutters">
+                        <div class=" col-md-4  ">
+                            <img src="
+                            {% if artic.image != 'none' %}
+                            {{ url_for('static', filename='img/uploads/' ~ artic.image) }}
+                            {% else %}
+                            {{url_for('static', filename='img/default_sub.jpg')}}
+                            {% endif %}
+                            " class="card-img"  alt="صورة">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"> <a class="text-decoration-none" href="{{url_for("show_one_subject",sub_id=artic.id)}}">{{ artic.title }} </a></h5>
+                                <p class="card-text">{{ artic.content[0:201] | safe}}<br><a class="text-decoration-none" href="{{url_for("show_one_subject",sub_id=artic.id)}}">... اكمل القراءة </a></p>
+                            </div>
+                        </div>
+                        </div>
+                
+    
+            </div>
+        </div>
+        {% endfor %}
+        
+</div>
+
+
+{% endblock %}

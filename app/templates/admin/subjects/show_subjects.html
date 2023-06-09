@@ -1,0 +1,66 @@
+{% extends "base.html"%}
+{% block title %} المواضيع{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+      <a class="btn btn-sm btn-success primary" href="{{ url_for("add_subject") }}">إضافة موضوع جديد</a>  
+<table class="table mt-5 mb-5 text-center">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">الفئة</th>
+        <th scope="col">عنوان الموضوع</th>
+        <th scope="col">اسم الكاتب </th>
+        <th scope="col">الرتبة</th>
+        <th scope="col">حالة الموضوع</th>
+        <th scope="col">اجراء</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects  %}
+      <tr>
+       <td>{{subject.id }}</td>
+       <td>{{subject.category.title}}</td>
+       <td>{{subject.title}}</td>
+       {% if subject.author %}
+       <td>{{subject.author.first_name}}  {{subject.author.last_name}}</td>
+       <td>{{subject.author.role.title}}</td>
+       {% else %}
+       <td>تم حذف الكاتب</td>
+       <td>تم حذف الكاتب</td>
+       {% endif %}
+       <td>{% if subject.is_approved %} تم الاعتماد {% else %} غير معتمد {% endif %}</td>
+       <td>
+            
+            <a class="btn btn-sm btn-primary mt-2 mb-2" href="{{url_for("show_one_subject",sub_id=subject.id)}}">استعراض</a>
+            <a class="btn btn-sm btn-secondary mt-2 mb-2" href="{{url_for("see_one_subject",sub_id=subject.id)}}">معاينة</a>
+            <a class="btn btn-sm btn-primary mt-2 mb-2 primary" href="{{url_for("update_subject",sub_id=subject.id)}}">تعديل</a>
+            {% if subject.is_approved %}
+            <a class="btn btn-sm btn-warning mt-2 mb-2" href="{{url_for("disallow_subject",sub_id=subject.id)}}">الغاء الاعتماد</a>
+            {% else %}
+            <a class="btn btn-sm btn-success mt-2 mb-2 " href="{{url_for("approve_subject",sub_id=subject.id)}}">اعتماد</a>
+            {% endif %}
+            <a class="btn btn-sm btn-danger mt-2 mb-2 " href="{{url_for("delete_subject",sub_id=subject.id)}}"> حذف </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}
+
+
+

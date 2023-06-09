@@ -1,0 +1,51 @@
+{% extends "base.html"%}
+{% block title %} المستخدمين{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+      <a class="btn btn-sm btn-success primary" href="{{ url_for("add_user") }}">إضافة مستخدم جديد</a>  
+<table class="table mt-5 mb-5">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">الاسم الاول</th>
+        <th scope="col">اسم العائلة</th>
+        <th scope="col">الايميل</th>
+        <th scope="col">الدور</th>
+        <th scope="col">اجراء</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+      <tr>
+       <td>{{ user.id }}</td>
+       <td>{{user.first_name}}</td>
+       <td>{{user.last_name}}</td>
+       <td>{{user.email}}</td>
+       <td>{{user.role.title}}</td>
+       <td>{% if user.is_active %}
+            <a class="btn btn-sm btn-warning" href="{{url_for("deactivate",user_id=user.id)}}">مفعل</a>
+        {% else %}
+            <a class="btn btn-sm btn-success" href="{{url_for("activate",user_id=user.id)}}">تفعيل</a>
+        {% endif %}
+        <a class="btn btn-sm btn-primary " href="{{ url_for("update_user",user_id=user.id) }}">تعديل</a>
+        <a class="btn btn-sm btn-danger" href="{{ url_for("delete_user",user_id=user.id)}}"> حذف </a>
+    </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

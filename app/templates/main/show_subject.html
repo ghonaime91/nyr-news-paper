@@ -1,0 +1,88 @@
+{% extends "base.html"%}
+{% block title %} {{article.title}}{% endblock %}
+{% block content %}
+
+
+
+<div class="container mt-5 mb-5 d-flex flex-column justify-content-center align-items-center style="margin-top: 100px; margin-bottom: 150px;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    <div class="card col-sm-12 col-md-12 col-lg-10 " >
+        
+        <img class="card-img-top " style="height: 380px; width: 380px; margin-right:auto; margin-left: auto;" src="
+        {% if article.image != 'none' %}
+        {{ url_for('static', filename='img/uploads/' ~ article.image) }}
+        {% else %}
+        {{url_for('static', filename='img/default_sub.jpg')}}
+        {% endif %}
+        " alt="Card image">
+        <div class="card-body">
+            <h4 class="card-title mb-3">{{article.title}}</h4>
+            
+            <div class="audio mt-3 mb-3">
+              <audio controls>
+                  <source src="{{ url_for('static', filename='audio/uploads/' ~ article.audio) }}" type="audio/mpeg">
+                  <source src="{{ url_for('static', filename='audio/uploads/' ~ article.audio) }}" type="audio/mp3">
+              </audio>
+          </div>
+            
+            
+            <article class=" card-text">
+                    {{article.content | safe}}
+             </article>
+             <div class="card-footer text-muted mt-3 ">
+            تم النشر بتاريخ: {{ article.created_at.strftime("%Y-%m-%d") }}
+          </div>
+          </div>
+    
+    
+    
+    
+    </div>
+
+              <div class="comments-section mt-4 " style="width: 50%;">
+                <h4>التعليقات</h4>
+                {% for comment in comments %}
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <p class="card-text">{% if comment.user %}
+                            <small style="font-size: 11px;"> تم التعليق بواسطة {{ comment.user.first_name }} {{ comment.user.last_name }}</small>
+                        {% else %}
+                        <small style="font-size: 11px;"> تم حذف صاحب التعليق </small>
+                        {% endif %}
+                        </p>
+                        <p class="card-text">{{ comment.content }}</p>
+                        <small class="text-muted">{{ comment.created_at.strftime("%Y-%m-%d %H:%M") }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- نموذج إضافة تعليق جديد -->
+            <div class="add-comment-section mt-4 " style="width: 50%;">
+                <h4>أضف تعليقًا</h4>
+                <form action="{{ url_for('show_one_subject', sub_id=article.id) }}" method="POST">
+                    <div class="form-group">
+                        <textarea class="form-control" name="content" rows="4" cols="30"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary primary mt-2">إضافة تعليق</button>
+                </form>
+            </div>
+</div>
+
+</div>
+
+
+
+
+
+{% endblock %}

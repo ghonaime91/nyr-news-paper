@@ -1,0 +1,52 @@
+{% extends "base.html"%}
+{% block title %} مواضيعي{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+      <a class="btn btn-sm btn-success primary" href="{{ url_for("author_add_subject") }}">إضافة موضوع جديد</a>  
+<table class="table mt-5 mb-5 text-center">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">الفئة</th>
+        <th scope="col">عنوان الموضوع</th>
+        <th scope="col">اسم الكاتب </th>
+        <th scope="col">اجراء</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects  %}
+      <tr>
+       <td>{{subject.id }}</td>
+       <td>{{subject.category.title}}</td>
+       <td>{{subject.title}}</td>
+       <td>{{subject.author.first_name}}  {{subject.author.last_name}}</td>
+       <td>
+            
+          {% if subject.is_approved %}
+          <a class="btn btn-sm btn-primary " href="{{url_for("show_one_subject",sub_id=subject.id)}}">استعراض</a>
+          {% else %}
+          <span class="badge bg-secondary fs-7">في انتظار الاعتماد</span>
+          {% endif %}
+
+            <a class="btn btn-sm btn-primary  primary" href="{{url_for("author_update_subject",sub_id=subject.id)}}">تعديل</a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

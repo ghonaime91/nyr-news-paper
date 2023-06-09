@@ -1,0 +1,48 @@
+{% extends "base.html"%}
+{% block title %} كل التعليقات{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+     
+<table class="table mt-5 mb-5 text-center">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">عنوان الموضوع</th>
+        <th scope="col">اسم المعلق</th>
+        <th scope="col">الرتبة</th>
+        <th scope="col"> محتوى التعليق</th>
+        <th scope="col">اجراء</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for comment in comments %}
+      <tr>
+       <td>{{comment.id }}</td>
+       <td>{{comment.article.title }}</td>
+       <td>{{comment.user.first_name}} {{comment.user.last_name}}</td>
+       <td>{{comment.user.role.title}}</td>
+       <td>{{comment.content}}</td>
+       <td>
+            
+            <a class="btn btn-sm btn-primary primary " href="{{url_for("show_one_subject",sub_id=comment.article.id)}}">استعراض الموضوع</a>
+            <a class="btn btn-sm btn-danger mt-2 mb-2" href="{{url_for("delete_comment",comm_id=comment.id)}}">  حذف التعليق </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

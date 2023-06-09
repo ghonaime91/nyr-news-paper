@@ -1,0 +1,53 @@
+{% extends "base.html"%}
+{% block title %} نتائج البحث{% endblock %}
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <h1 class="mt-5 mb-5 text-center fs-1">نتائج البحث</h1>
+  <div class="container d-flex justify-content-evenly mb-5 ">
+    <form class="d-flex mt-2 me-5 col-12 col-sm-12 col-md-8" method="get" action="{{url_for("search")}}">
+     <img class="ms-2" src="{{ url_for('static', filename='img/weather.png')}}" width="60" alt="">
+       <input class="form-control me-2 text-color-white" type="search" placeholder="ابحث عن موضوع" name="q">
+       <button class="btn btn-outline-primary me-1 ms-3" type="submit">البحث</button>
+   </form>  
+</div>
+  {% if num < 1%}
+  <h3 class="mt-5 mb-5 text-center ">لم يتم العثور على أي نتيجة </h3>
+    {% else %}
+    <h3 class="mt-5 mb-5 text-center ">عدد النتائج {{num}}</h3>
+    {% endif %}
+  <div class="row d-flex justify-content-evenly mt-5">
+    
+    {% for sub in results %}
+
+                <div class="card col-12  col-sm-12 col-md-6 col-xl-4 col-xxl-4 ">
+                    <div class="row no-gutters">
+                    <div class=" col-md-4  ">
+                        <img src="
+                        {% if sub.image != 'none' %}
+                        {{ url_for('static', filename='img/uploads/' ~ sub.image) }}
+                        {% else %}
+                        {{url_for('static', filename='img/default_sub.jpg')}}
+                        {% endif %}" class="card-img"  alt="صورة">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"><a class="text-decoration-none" href="{{url_for("show_one_subject",sub_id=sub.id)}}">{{ sub.title }}</a></h5>
+                            <p class="card-text">{{ sub.content[0:86] | safe}}<br><a href ='{{url_for("show_one_subject",sub_id=sub.id)}}' class="text-decoration-none">... اكمل القراءة </a></p>
+                        </div>
+                    </div>
+                    </div>
+            
+
+        </div>
+    {% endfor %}
+    </div>
+  {% endblock %}

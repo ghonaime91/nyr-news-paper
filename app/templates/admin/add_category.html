@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% block title %}إضافة فئة جديدة{% endblock %}
+{% block content %}
+
+
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+            {{ message }}
+            </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+            <form action="{{url_for("add_category")}}" class="login-form" method="post">
+                <div class="mb-3 mt-3">
+                  <label for="first_name" class="form-label">اسم الفئة</label>
+                  <input type="text" class="form-control" value="" placeholder="ادخل اسم الفئة" name="title">
+                </div>
+                <button type="submit" class="btn btn-primary primary mt-3">إضافة فئة جديدة</button>
+              </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

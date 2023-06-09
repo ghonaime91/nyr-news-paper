@@ -1,0 +1,32 @@
+{% extends "base.html"%}
+{% block title %} تسجيل الدخول{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+            <form action="{{url_for("login")}}" class="login-form" method="post">
+                <div class="mb-3 mt-3">
+                  <label for="email" class="form-label">الايميل</label>
+                  <input type="email" class="form-control" id="email" placeholder="ادخل الايميل" name="email">
+                </div>
+                <div class="mb-3">
+                  <label for="pwd" class="form-label">كلمة المرور</label>
+                  <input type="password" class="form-control" id="pwd" placeholder="ادخل كلمة المرور" name="password">
+                </div>
+               
+                <button type="submit" class="btn btn-primary primary">تسجيل الدخول</button>
+              </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

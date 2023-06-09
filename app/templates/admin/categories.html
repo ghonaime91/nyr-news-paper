@@ -1,0 +1,42 @@
+{% extends "base.html"%}
+{% block title %} الفئات{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+      <a class="btn btn-sm btn-success primary" href="{{ url_for("add_category") }}">إضافة فئة جديدة</a>  
+<table class="table mt-5 mb-5 text-center">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">اسم الفئة</th>
+        <th scope="col">اجراء</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+      <tr>
+       <td>{{category.id }}</td>
+       <td>{{category.title}}</td>
+       <td>
+            
+            <a class="btn btn-sm btn-primary " href="{{url_for("update_category",cat_id=category.id)}}">تعديل</a>
+            <a class="btn btn-sm btn-danger" href="{{url_for("delete_category",cat_id=category.id)}}"> حذف </a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% block title %}تعديل فئة {% endblock %}
+{% block content %}
+
+
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+            {{ message }}
+            </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+            <form action="{{url_for("update_category",cat_id=category.id)}}" class="login-form" method="post">
+                <div class="mb-3 mt-3">
+                  <label for="first_name" class="form-label">ادخل اسم الفئة الجديد</label>
+                  <input type="text" class="form-control" value="{{category.title}}" placeholder="ادخل اسم الفئة" name="title">
+                </div>
+                <button type="submit" class="btn btn-primary primary mt-3">تحديث اسم الفئة </button>
+              </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
