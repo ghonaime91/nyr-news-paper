@@ -204,6 +204,11 @@ z-index: 1;
 
   @media (max-width: 773px) {
 
+   #search_form {
+        width:87% !important;
+        margin-left:51px;
+    }
+      
     .footer .contacts {
         display: flex;
         flex-direction: column;
