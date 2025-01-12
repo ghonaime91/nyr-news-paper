@@ -11,7 +11,7 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
-     
+
 <table class="table mt-5 mb-5 text-center">
     <thead>
       <tr>
@@ -28,11 +28,16 @@
       <tr>
        <td>{{comment.id }}</td>
        <td>{{comment.article.title }}</td>
-       <td>{{comment.user.first_name}} {{comment.user.last_name}}</td>
-       <td>{{comment.user.role.title}}</td>
+            {% if not comment.user.id %}
+                <td>تم حذف صاحب التعليق</td>
+                <td>تم حذف صاحب التعليق</td>
+            {% else %}
+                <td>{{comment.user.first_name}} {{comment.user.last_name}}</td>
+               <td>{{comment.user.role.title}}</td>
+            {% endif %}
        <td>{{comment.content}}</td>
        <td>
-            
+
             <a class="btn btn-sm btn-primary primary " href="{{url_for("show_one_subject",sub_id=comment.article.id)}}">استعراض الموضوع</a>
             <a class="btn btn-sm btn-danger mt-2 mb-2" href="{{url_for("delete_comment",comm_id=comment.id)}}">  حذف التعليق </a>
         </td>
